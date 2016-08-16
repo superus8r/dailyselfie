@@ -1,5 +1,6 @@
 package com.mpandg.dailyselfie;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,8 +10,12 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.mpandg.dailyselfie.model.Photo;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -25,21 +30,12 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final String TAG = "MainActivity";
     private String mCurrentPhotoPath;
+    private String mPhotoName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        dispatchTakePictureIntent();
-    }
-
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        sendBroadcast(mediaScanIntent);
     }
 
     private void dispatchTakePictureIntent() {
@@ -67,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
 
         // create an image file name.
+        @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -78,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         // save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
+        mPhotoName = imageFileName;
         Log.i(TAG, "current photo path:" + mCurrentPhotoPath);
         return image;
     }
@@ -93,6 +91,29 @@ public class MainActivity extends AppCompatActivity {
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .into(iv);
+            // create a new photo object using current credentials.
+            Photo photo = new Photo(mPhotoName, mCurrentPhotoPath);
+            // save the photo.
+            photo.save(this);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.take_photo:
+                dispatchTakePictureIntent();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
