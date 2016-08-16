@@ -74,4 +74,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             name.setText(photo.getName());
         }
     }
+
+    public void addItem (Photo photo) {
+        photos.add(photo);
+        notifyDataSetChanged();
+    }
 }

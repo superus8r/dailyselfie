@@ -9,12 +9,16 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.mpandg.dailyselfie.adapter.ImageAdapter;
+import com.mpandg.dailyselfie.data.DataSource;
 import com.mpandg.dailyselfie.model.Photo;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -24,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,11 +36,31 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private String mCurrentPhotoPath;
     private String mPhotoName;
+    private ImageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // get a new instance of dataSource to access dataBase.
+        DataSource dataSource = new DataSource(this);
+
+        // init recyclerView.
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        //fetch the photos from dataBase.
+        dataSource.open();
+        List<Photo> photos = dataSource.getPhotos();
+        dataSource.close();
+
+        // init the adapter.
+        adapter = new ImageAdapter(this, photos);
+
+        // set the adapter
+        recyclerView.setAdapter(adapter);
     }
 
     private void dispatchTakePictureIntent() {
@@ -95,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
             Photo photo = new Photo(mPhotoName, mCurrentPhotoPath);
             // save the photo.
             photo.save(this);
+            // update the adapter.
+            adapter.addItem(photo);
+            //adapter.notifyDataSetChanged();
         }
     }
 
