@@ -2,11 +2,13 @@ package com.mpandg.dailyselfie;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +28,7 @@ import com.mpandg.dailyselfie.util.PhotoDeleteListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -71,8 +74,9 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         // send the notification using the alarm.
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + TWO_MINUTES,
+        alarmManager.setRepeating(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + TWO_MINUTES,
                 TWO_MINUTES,
                 notificationPendingIntent);
     }
@@ -168,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
     public void onClickListener(Photo photo) {
 
         // open the photoView activity.
+        Intent intent = new Intent(this, FullscreenPhotoViewer.class);
+        intent.putExtra(Photo.KEY, photo);
+        startActivity(intent);
     }
 
     @Override

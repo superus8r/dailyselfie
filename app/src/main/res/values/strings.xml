@@ -10,4 +10,7 @@
     <string name="alert_dialog_no">No</string>
     <string name="deleted">Deleted Successfuly</string>
     <string name="not_deleted">There was a problem deleting the photo</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="photo_load_error">Photo load error</string>
 </resources>

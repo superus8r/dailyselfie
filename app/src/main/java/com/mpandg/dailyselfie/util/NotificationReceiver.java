@@ -25,15 +25,16 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         // this intent is used when the user clicks the notification.
         Intent reminderIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // create the notification.
         Notification.Builder notificationBuilder = new Notification.Builder(context)
                 .setContentTitle(context.getResources().getString(R.string.notification_title))
                 .setContentText(context.getResources().getString(R.string.time_for_selfie))
                 .setSmallIcon(android.R.drawable.ic_menu_camera)
-                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
+
+        notificationBuilder.setContentIntent(contentIntent);
         
         // get reference to notification manager.
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

@@ -57,6 +57,7 @@ public class DeletePhotoDialogFragment extends DialogFragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                 // user does not want to delete the photo.
+                                // pass.
                             }
                         })
                 .create();
