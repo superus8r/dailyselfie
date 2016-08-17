@@ -48,7 +48,7 @@ public class DeletePhotoDialogFragment extends DialogFragment {
                                 PhotoDeleteListener listener = (PhotoDeleteListener) getActivity();
                                 // get the photo in the bundle.
                                 Photo photo = getArguments().getParcelable(Photo.KEY);
-                                listener.onDeletePhoto(photo);
+                                listener.onDeletePhoto(photo, getArguments().getInt(Photo.POSITION_KEY));
                             }
                         })
                 .setNegativeButton(R.string.alert_dialog_no,
