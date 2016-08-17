@@ -3,7 +3,6 @@ package com.mpandg.dailyselfie.model;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.mpandg.dailyselfie.data.DataSource;
 

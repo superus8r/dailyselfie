@@ -154,9 +154,9 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
     public void onDeletePhoto(Photo photo) {
 
         // delete the photo.
-        photo.delete();
+        boolean deleted = photo.delete(this);
 
         // inform the user about deletion.
-        Toast.makeText(this, R.string.deleted, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, deleted ? R.string.deleted : R.string.not_deleted, Toast.LENGTH_SHORT).show();
     }
 }
