@@ -13,6 +13,7 @@ import com.mpandg.dailyselfie.model.Photo;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,8 +28,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public ImageAdapter(Context context, List<Photo> photos) {
 
         this.context = context;
-        //noinspection AccessStaticViaInstance
-        this.photos = photos;
+        if (photos == null){
+            //noinspection AccessStaticViaInstance
+            this.photos = new ArrayList<>();
+        } else {
+            //noinspection AccessStaticViaInstance
+            this.photos = photos;
+        }
     }
 
     @Override
