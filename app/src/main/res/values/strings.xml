@@ -3,4 +3,6 @@
     <string name="take_photo">Take Photo</string>
     <string name="dummy">dummy</string>
     <string name="image">image thumbnail</string>
+    <string name="time_for_selfie">Time for another selfie</string>
+    <string name="notification_title">Daily Selfie Reminder</string>
 </resources>

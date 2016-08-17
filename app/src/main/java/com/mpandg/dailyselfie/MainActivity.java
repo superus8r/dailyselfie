@@ -1,22 +1,24 @@
 package com.mpandg.dailyselfie;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.mpandg.dailyselfie.Utils.NotificationReciever;
 import com.mpandg.dailyselfie.adapter.ImageAdapter;
 import com.mpandg.dailyselfie.data.DataSource;
 import com.mpandg.dailyselfie.model.Photo;
@@ -33,6 +35,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final long TWO_MINUTES = 2 * 60 * 1000;
+
     private static final String TAG = "MainActivity";
     private String mCurrentPhotoPath;
     private String mPhotoName;
@@ -61,6 +65,19 @@ public class MainActivity extends AppCompatActivity {
 
         // set the adapter
         recyclerView.setAdapter(adapter);
+
+        // Create a pending intent for the reminder notifications.
+        Intent notificationIntent = new Intent(MainActivity.this, NotificationReciever.class);
+        PendingIntent notificationPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, notificationIntent, 0);
+
+        // get reference to alarm manager.
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        // send the notification using the alarm.
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis() + TWO_MINUTES,
+                TWO_MINUTES,
+                notificationPendingIntent);
     }
 
     private void dispatchTakePictureIntent() {
@@ -108,15 +125,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            ImageView iv = (ImageView) findViewById(R.id.image);
-            //iv.setImageBitmap(imageBitmap);
-            Picasso.with(this)
-                    .load(new File(mCurrentPhotoPath))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(iv);
-            // create a new photo object using current credentials.
+            // create a new photo object using current taken photo details.
             Photo photo = new Photo(mPhotoName, mCurrentPhotoPath);
             // save the photo.
             photo.save(this);
