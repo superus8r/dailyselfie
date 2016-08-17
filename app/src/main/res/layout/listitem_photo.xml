@@ -4,7 +4,11 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="128dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/listitem_vertical_padding"
+    android:paddingBottom="@dimen/listitem_vertical_padding">
 
     <ImageView
         android:id="@+id/image"

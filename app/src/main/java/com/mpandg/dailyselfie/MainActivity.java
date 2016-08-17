@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,15 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.mpandg.dailyselfie.Utils.NotificationReciever;
+import com.mpandg.dailyselfie.util.NotificationReceiver;
 import com.mpandg.dailyselfie.adapter.ImageAdapter;
 import com.mpandg.dailyselfie.data.DataSource;
 import com.mpandg.dailyselfie.model.Photo;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
+import com.mpandg.dailyselfie.util.PhotoDeleteListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PhotoDeleteListener {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final long TWO_MINUTES = 2 * 60 * 1000;
@@ -67,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Create a pending intent for the reminder notifications.
-        Intent notificationIntent = new Intent(MainActivity.this, NotificationReciever.class);
+        Intent notificationIntent = new Intent(MainActivity.this, NotificationReceiver.class);
         PendingIntent notificationPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, notificationIntent, 0);
 
         // get reference to alarm manager.
@@ -152,5 +148,15 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDeletePhoto(Photo photo) {
+
+        // delete the photo.
+        photo.delete();
+
+        // inform the user about deletion.
+        Toast.makeText(this, R.string.deleted, Toast.LENGTH_SHORT).show();
     }
 }

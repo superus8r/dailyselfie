@@ -1,15 +1,21 @@
 package com.mpandg.dailyselfie.model;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 
 import com.mpandg.dailyselfie.data.DataSource;
+
+import java.io.File;
 
 /**
  * Created by Ali Kabiri on 8/16/2016.
  * Find me here: ali@kabiri.org
  */
-public class Photo {
+public class Photo implements Parcelable {
 
+    public static final String KEY = "photo_object";
     private String name;
     private String src;
 
@@ -43,5 +49,48 @@ public class Photo {
         dataSource.open();
         dataSource.insertPhoto(this);
         dataSource.close();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.src);
+    }
+
+    protected Photo(Parcel in) {
+        this.name = in.readString();
+        this.src = in.readString();
+    }
+
+    public static final Parcelable.Creator<Photo> CREATOR = new Parcelable.Creator<Photo>() {
+        @Override
+        public Photo createFromParcel(Parcel source) {
+            return new Photo(source);
+        }
+
+        @Override
+        public Photo[] newArray(int size) {
+            return new Photo[size];
+        }
+    };
+
+    public boolean delete(Context context) {
+
+        // delete the physical photo which exists on the internal storage.
+        File photoFile = new File(this.src);
+        boolean fileDeleted = photoFile.delete();
+
+        // delete the photo record from database.
+        DataSource dataSource = new DataSource(context);
+        // since the photo names are unique, we can delete it by its name.
+        boolean recordDeleted = dataSource.deletePhotoByName(this.name);
+
+        // if both phases of deletion was true, return true.
+        return fileDeleted && recordDeleted;
     }
 }

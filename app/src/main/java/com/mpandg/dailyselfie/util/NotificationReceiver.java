@@ -1,4 +1,4 @@
-package com.mpandg.dailyselfie.Utils;
+package com.mpandg.dailyselfie.util;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,7 +14,7 @@ import com.mpandg.dailyselfie.R;
  * Created by Ali Kabiri on 8/17/2016.
  * Find me here: ali@kabiri.org
  */
-public class NotificationReciever extends BroadcastReceiver {
+public class NotificationReceiver extends BroadcastReceiver {
 
     private static final int NOTIFICATION_ID = 10;
 

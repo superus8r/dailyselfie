@@ -132,4 +132,19 @@ public class DataSource {
             return null;
         }
     }
+
+    public boolean deletePhotoByName(String name) {
+
+        // where statement.
+        String whereClause = DatabaseHelper.PHOTOS_COLUMN_NAME + "=?";
+        String[] whereArgs = {name};
+
+        // execute the delete query.
+        int deleteId = database.delete(DatabaseHelper.TABLE_PHOTOS, whereClause, whereArgs);
+        // log the id of deleted row.
+        Log.i(TAG, "deleted photo id:" + deleteId);
+
+        // if the id is zero, so there's a problem in deletion.
+        return deleteId != 0;
+    }
 }
