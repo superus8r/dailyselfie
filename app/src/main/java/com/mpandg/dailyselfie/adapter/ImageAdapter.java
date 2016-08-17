@@ -88,7 +88,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             root.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    listener.onLongClickListener(photo);
+                    listener.onLongClickListener(photo, getAdapterPosition());
                     return true;
                 }
             });
@@ -96,13 +96,24 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     }
 
     public void addItem (Photo photo) {
+
+        // add the new photo to the list.
         photos.add(photo);
+        // refresh the adapter.
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+
+        // remove the photo from the list.
+        photos.remove(position);
+        // refresh the adapter.
         notifyDataSetChanged();
     }
 
     public interface ClickListener{
 
         void onClickListener(Photo photo);
-        void onLongClickListener(Photo photo);
+        void onLongClickListener(Photo photo, int position);
     }
 }

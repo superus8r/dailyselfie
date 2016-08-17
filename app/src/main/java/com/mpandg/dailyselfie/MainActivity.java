@@ -152,10 +152,13 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
     }
 
     @Override
-    public void onDeletePhoto(Photo photo) {
+    public void onDeletePhoto(Photo photo, int position) {
 
         // delete the photo.
         boolean deleted = photo.delete(this);
+
+        // refresh the adapter.
+        adapter.removeItem(position);
 
         // inform the user about deletion.
         Toast.makeText(this, deleted ? R.string.deleted : R.string.not_deleted, Toast.LENGTH_SHORT).show();
@@ -168,10 +171,10 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
     }
 
     @Override
-    public void onLongClickListener(Photo photo) {
+    public void onLongClickListener(Photo photo, int position) {
 
         // open the delete dialog.
-        DeletePhotoDialogFragment fragment = DeletePhotoDialogFragment.newInstance(photo);
+        DeletePhotoDialogFragment fragment = DeletePhotoDialogFragment.newInstance(photo, position);
         fragment.show(getSupportFragmentManager(), DeletePhotoDialogFragment.TAG);
     }
 }

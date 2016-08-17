@@ -8,5 +8,5 @@ import com.mpandg.dailyselfie.model.Photo;
  */
 public interface PhotoDeleteListener {
 
-    void onDeletePhoto(Photo photo);
+    void onDeletePhoto(Photo photo, int position);
 }

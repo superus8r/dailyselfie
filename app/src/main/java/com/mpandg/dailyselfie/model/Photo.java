@@ -15,6 +15,7 @@ import java.io.File;
 public class Photo implements Parcelable {
 
     public static final String KEY = "photo_object";
+    public static final String POSITION_KEY = "position";
     private String name;
     private String src;
 
@@ -87,7 +88,9 @@ public class Photo implements Parcelable {
         // delete the photo record from database.
         DataSource dataSource = new DataSource(context);
         // since the photo names are unique, we can delete it by its name.
+        dataSource.open();
         boolean recordDeleted = dataSource.deletePhotoByName(this.name);
+        dataSource.close();
 
         // if both phases of deletion was true, return true.
         return fileDeleted && recordDeleted;

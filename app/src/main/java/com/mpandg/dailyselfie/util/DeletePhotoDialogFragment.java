@@ -18,12 +18,13 @@ public class DeletePhotoDialogFragment extends DialogFragment {
 
     public static final String TAG = "delete_dialog";
 
-    public static DeletePhotoDialogFragment newInstance (Photo photo) {
+    public static DeletePhotoDialogFragment newInstance (Photo photo, int position) {
 
         DeletePhotoDialogFragment fragment = new DeletePhotoDialogFragment();
         // create a new bundle object and put the photo in it.
         Bundle args = new Bundle();
         args.putParcelable(Photo.KEY, photo);
+        args.putInt(Photo.POSITION_KEY, position);
         // put the bundle into the fragment.
         fragment.setArguments(args);
         // return the configured fragment.
