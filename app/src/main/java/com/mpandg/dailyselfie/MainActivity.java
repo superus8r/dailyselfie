@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 import com.mpandg.dailyselfie.util.NotificationReceiver;
 import com.mpandg.dailyselfie.adapter.ImageAdapter;
 import com.mpandg.dailyselfie.data.DataSource;
@@ -28,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PhotoDeleteListener {
+public class MainActivity extends AppCompatActivity implements PhotoDeleteListener, ImageAdapter.ClickListener {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final long TWO_MINUTES = 2 * 60 * 1000;
@@ -158,5 +159,19 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
 
         // inform the user about deletion.
         Toast.makeText(this, deleted ? R.string.deleted : R.string.not_deleted, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClickListener(Photo photo) {
+
+        // open the photoView activity.
+    }
+
+    @Override
+    public void onLongClickListener(Photo photo) {
+
+        // open the delete dialog.
+        DeletePhotoDialogFragment fragment = DeletePhotoDialogFragment.newInstance(photo);
+        fragment.show(getSupportFragmentManager(), DeletePhotoDialogFragment.TAG);
     }
 }

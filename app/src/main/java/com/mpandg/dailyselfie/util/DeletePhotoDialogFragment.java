@@ -16,6 +16,8 @@ import com.mpandg.dailyselfie.model.Photo;
  */
 public class DeletePhotoDialogFragment extends DialogFragment {
 
+    public static final String TAG = "delete_dialog";
+
     public static DeletePhotoDialogFragment newInstance (Photo photo) {
 
         DeletePhotoDialogFragment fragment = new DeletePhotoDialogFragment();

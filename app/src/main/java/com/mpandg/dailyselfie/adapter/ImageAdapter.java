@@ -55,23 +55,43 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public View root;
         public ImageView image;
         public TextView name;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            root = itemView;
             image = (ImageView) itemView.findViewById(R.id.image);
             name = (TextView) itemView.findViewById(R.id.name);
         }
 
         public void bind(Context context) {
 
+            // prepare the listener.
+            final ClickListener listener = (ClickListener) context;
+
             // bind views to data.
-            Photo photo = photos.get(getAdapterPosition());
+            final Photo photo = photos.get(getAdapterPosition());
             Picasso.with(context)
                     .load(new File(photo.getSrc()))
                     .into(image);
             name.setText(photo.getName());
+
+            // register the listeners.
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onClickListener(photo);
+                }
+            });
+            root.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    listener.onLongClickListener(photo);
+                    return true;
+                }
+            });
         }
     }
 

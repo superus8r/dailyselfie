@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.mpandg.dailyselfie.MainActivity;
 import com.mpandg.dailyselfie.R;
@@ -17,6 +18,7 @@ import com.mpandg.dailyselfie.R;
 public class NotificationReceiver extends BroadcastReceiver {
 
     private static final int NOTIFICATION_ID = 10;
+    private static final String TAG = "notification_receiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -37,5 +39,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // show the notification.
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        // log the receive event for debugging purposes.
+        Log.d(TAG, "event received.");
     }
 }
