@@ -79,4 +79,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         photos.add(photo);
         notifyDataSetChanged();
     }
+
+    public interface ClickListener{
+
+        void onClickListener(Photo photo);
+        void onLongClickListener(Photo photo);
+    }
 }
