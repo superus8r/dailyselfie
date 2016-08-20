@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TAG = "database";
 
     // database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     // database file name.
     public static final String DATABASE_NAME = "database.db";
 
@@ -23,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_PHOTOS = "photos";
     public static final String PHOTOS_COLUMN_ID = "id";
     public static final String PHOTOS_COLUMN_NAME = "name";
+    public static final String PHOTO_COLUMN_CATEGORY = "category";
     public static final String PHOTOS_COLUMN_SRC = "src";
 
     // query of creating photos table.
@@ -30,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_PHOTOS + " (" +
                     PHOTOS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     PHOTOS_COLUMN_NAME + " TEXT, " +
+                    PHOTO_COLUMN_CATEGORY + " TEXT, " +
                     PHOTOS_COLUMN_SRC + " TEXT" + ")";
 
     // query string of deleting users table.
