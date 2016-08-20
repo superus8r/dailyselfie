@@ -17,6 +17,7 @@ public class Photo implements Parcelable {
     public static final String KEY = "photo_object";
     public static final String POSITION_KEY = "position";
     private String name;
+    private String category;
     private String src;
 
     public Photo() {
@@ -34,6 +35,14 @@ public class Photo implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getSrc() {

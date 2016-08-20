@@ -2,7 +2,6 @@ package com.mpandg.dailyselfie;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,17 +17,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
-import com.mpandg.dailyselfie.util.NotificationReceiver;
 import com.mpandg.dailyselfie.adapter.ImageAdapter;
 import com.mpandg.dailyselfie.data.DataSource;
 import com.mpandg.dailyselfie.model.Photo;
+import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
+import com.mpandg.dailyselfie.util.NotificationReceiver;
 import com.mpandg.dailyselfie.util.PhotoDeleteListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +44,26 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // show the recyclerView.
+        initGallery(ImageAdapter.TYPE_LINEAR);
+
+        // Create a pending intent for the reminder notifications.
+        Intent notificationIntent = new Intent(MainActivity.this, NotificationReceiver.class);
+        PendingIntent notificationPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, notificationIntent, 0);
+
+        // get reference to alarm manager.
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        // send the notification using the alarm.
+        alarmManager.setRepeating(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + TWO_MINUTES,
+                TWO_MINUTES,
+                notificationPendingIntent);
+    }
+
+    private void initGallery(int type) {
 
         // get a new instance of dataSource to access dataBase.
         DataSource dataSource = new DataSource(this);
@@ -65,20 +83,6 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
 
         // set the adapter
         recyclerView.setAdapter(adapter);
-
-        // Create a pending intent for the reminder notifications.
-        Intent notificationIntent = new Intent(MainActivity.this, NotificationReceiver.class);
-        PendingIntent notificationPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, notificationIntent, 0);
-
-        // get reference to alarm manager.
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        // send the notification using the alarm.
-        alarmManager.setRepeating(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + TWO_MINUTES,
-                TWO_MINUTES,
-                notificationPendingIntent);
     }
 
     private void dispatchTakePictureIntent() {

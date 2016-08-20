@@ -28,6 +28,7 @@ public class DataSource {
     public static final String[] usersTableColumns = {
             DatabaseHelper.PHOTOS_COLUMN_ID,
             DatabaseHelper.PHOTOS_COLUMN_NAME,
+            DatabaseHelper.PHOTOS_COLUMN_CATEGORY,
             DatabaseHelper.PHOTOS_COLUMN_SRC
     };
 
@@ -71,6 +72,7 @@ public class DataSource {
 
         // put the data you want to insert into database.
         values.put(DatabaseHelper.PHOTOS_COLUMN_NAME, photo.getName());
+        values.put(DatabaseHelper.PHOTOS_COLUMN_CATEGORY, photo.getCategory());
         values.put(DatabaseHelper.PHOTOS_COLUMN_SRC, photo.getSrc());
 
         // passing the string array which we created earlier
@@ -112,6 +114,7 @@ public class DataSource {
 
                 // read the data in the cursor row using the index which is the column name.
                 photo.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_NAME)));
+                photo.setCategory(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_CATEGORY)));
                 photo.setSrc(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_SRC)));
 
                 // log the retrieved photo.

@@ -22,6 +22,8 @@ import java.util.List;
  */
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
+    public static final int TYPE_GRID = 2;
+    public static final int TYPE_LINEAR = 1;
     private Context context;
     private static List<Photo> photos;
 
