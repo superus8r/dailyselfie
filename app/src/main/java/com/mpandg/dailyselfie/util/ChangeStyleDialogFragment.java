@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.mpandg.dailyselfie.R;
+import com.mpandg.dailyselfie.data.SharedPrefs;
 import com.mpandg.dailyselfie.model.Photo;
 
 /**
@@ -28,16 +29,19 @@ public class ChangeStyleDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        // get the sharePrefs instance.
+        SharedPrefs prefs = SharedPrefs.getInstance(getActivity());
+
         return new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.ic_line_style_black_24dp)
                 .setTitle(R.string.choose_style)
-                .setSingleChoiceItems(R.array.list_view_types, 0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(R.array.list_view_types, prefs.getViewStyle()-1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         // send the style change to the parent activity.
                         OnViewStyleChangeListener listener = (OnViewStyleChangeListener) getContext();
-                        listener.onViewStyleChange(i);
+                        listener.onViewStyleChange(i+1);
                     }
                 })
                 .create();

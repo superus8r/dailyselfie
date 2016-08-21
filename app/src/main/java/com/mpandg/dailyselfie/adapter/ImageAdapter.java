@@ -22,8 +22,10 @@ import java.util.List;
  */
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
-    public static final int TYPE_GRID = 2;
-    public static final int TYPE_LINEAR = 1;
+    public static final int STYLE_DEFAULT = 1;
+    public static final int STYLE_LINEAR = 1;
+    public static final int STYLE_GRID = 2;
+
     private Context context;
     private static List<Photo> photos;
     private int listViewType;
@@ -46,7 +48,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
         View v;
         // create a new view
-        if (listViewType == TYPE_GRID){
+        if (listViewType == STYLE_GRID){
 
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_photo_grid, parent, false);
         } else {
