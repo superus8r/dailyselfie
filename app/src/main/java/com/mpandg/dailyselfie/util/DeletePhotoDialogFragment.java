@@ -38,7 +38,7 @@ public class DeletePhotoDialogFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.ic_warning_black_24dp)
                 .setTitle(R.string.delete_title)
-                .setPositiveButton(R.string.alert_dialog_ok,
+                .setPositiveButton(R.string.alert_dialog_yes,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

@@ -6,7 +6,7 @@
     <string name="time_for_selfie">Time for another selfie</string>
     <string name="notification_title">Daily Selfie Reminder</string>
     <string name="delete_title">Delete Photo</string>
-    <string name="alert_dialog_ok">Yes</string>
+    <string name="alert_dialog_yes">Yes</string>
     <string name="alert_dialog_no">No</string>
     <string name="deleted">Deleted Successfuly</string>
     <string name="not_deleted">There was a problem deleting the photo</string>
@@ -16,6 +16,11 @@
     <string name="change_style">Change Style</string>
     <string name="choose_style">Please choose list style.</string>
     <string name="categories">Categories</string>
+    <string name="add_category">Add new category</string>
+    <string name="alert_dialog_cancell">Cancel</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="category_hint">Category Name</string>
+    <string name="category_added">Category added</string>
 
     <string-array name="list_view_types">
         <item>List</item>
