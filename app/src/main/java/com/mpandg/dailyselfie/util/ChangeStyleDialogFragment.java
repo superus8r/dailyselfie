@@ -31,13 +31,19 @@ public class ChangeStyleDialogFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.ic_line_style_black_24dp)
                 .setTitle(R.string.choose_style)
-                .setMultiChoiceItems(R.array.list_view_types, null, new DialogInterface.OnMultiChoiceClickListener() {
+                .setSingleChoiceItems(R.array.list_view_types, 0, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Toast.makeText(getContext(), "pos:" + i + " bool:" + b, Toast.LENGTH_SHORT).show();
+                        // send the style change to the parent activity.
+                        OnViewStyleChangeListener listener = (OnViewStyleChangeListener) getContext();
+                        listener.onViewStyleChange(i);
                     }
                 })
                 .create();
+    }
+
+    public interface OnViewStyleChangeListener {
+        void onViewStyleChange(int viewStyle);
     }
 }
