@@ -24,7 +24,6 @@ public class DataSource {
 
     private SQLiteOpenHelper dbHelper;
     private SQLiteDatabase database;
-    private Context context;
 
     // an string array holding our table's column names
     // which is going to be used by database methods.
@@ -44,7 +43,6 @@ public class DataSource {
 
         // instantiate the dbHelper object using our DatabaseHelper class.
         dbHelper = new DatabaseHelper(context);
-        this.context = context;
     }
 
     public void open(){
@@ -234,20 +232,6 @@ public class DataSource {
         // where statement.
         String whereClause = DatabaseHelper.PHOTOS_COLUMN_NAME + "=?";
         String[] whereArgs = {name};
-
-        // delete all existing photos before deleting the database.
-        List<Photo> photos = null;
-        DataSource dataSource = new DataSource(context);
-        dataSource.open();
-        photos = dataSource.getPhotos();
-        dataSource.close();
-        if (photos != null) {
-            // if there are saved photos.
-            for (Photo photo : photos) {
-                // delete each photo respectively.
-                photo.delete(context);
-            }
-        }
 
         // execute the delete query.
         int deleteId = database.delete(DatabaseHelper.TABLE_CATEGORIES, whereClause, whereArgs);

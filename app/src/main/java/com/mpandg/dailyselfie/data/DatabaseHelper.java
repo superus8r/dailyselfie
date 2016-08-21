@@ -4,6 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.mpandg.dailyselfie.model.Photo;
+
+import java.util.List;
+
 /**
  * Created by Ali Kabiri on 8/16/2016.
  * Find me here: ali@kabiri.org
@@ -14,9 +18,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TAG = "database";
 
     // database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     // database file name.
     public static final String DATABASE_NAME = "database.db";
+
+    private Context context;
 
     // photo table details:
     public static final String TABLE_PHOTOS = "photos";
@@ -53,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // create the database using given information.
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
