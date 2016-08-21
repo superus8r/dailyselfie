@@ -29,8 +29,8 @@ public class ChangeStyleDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         return new AlertDialog.Builder(getActivity())
-                .setIcon(R.drawable.ic_warning_black_24dp)
-                .setTitle(R.string.delete_title)
+                .setIcon(R.drawable.ic_line_style_black_24dp)
+                .setTitle(R.string.choose_style)
                 .setMultiChoiceItems(R.array.list_view_types, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
