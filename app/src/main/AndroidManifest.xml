@@ -33,7 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".FullscreenPhotoViewer"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -45,7 +44,9 @@
                 android:value="com.mpandg.dailyselfie.MainActivity" />
         </activity>
 
-        <receiver android:name="com.mpandg.dailyselfie.util.NotificationReceiver" />
+        <receiver android:name=".util.NotificationReceiver" />
+
+        <activity android:name=".CategoryActivity"></activity>
     </application>
 
 </manifest>

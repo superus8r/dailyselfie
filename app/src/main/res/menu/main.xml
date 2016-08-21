@@ -12,4 +12,9 @@
         android:id="@+id/change_style"
         android:title="@string/change_style"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/categories"
+        android:title="@string/categories"
+        app:showAsAction="never"/>
 </menu>

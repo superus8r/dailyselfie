@@ -3,7 +3,6 @@ package com.mpandg.dailyselfie.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by Ali Kabiri on 8/16/2016.
@@ -19,12 +18,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // database file name.
     public static final String DATABASE_NAME = "database.db";
 
-    // table details:
+    // photo table details:
     public static final String TABLE_PHOTOS = "photos";
     public static final String PHOTOS_COLUMN_ID = "id";
     public static final String PHOTOS_COLUMN_NAME = "name";
     public static final String PHOTOS_COLUMN_CATEGORY = "category";
     public static final String PHOTOS_COLUMN_SRC = "src";
+
+    // category table details:
+    public static final String TABLE_CATEGORIES = "categories";
+    public static final String CATEGORIES_COLUMN_ID = "id";
+    public static final String CATEGORIES_COLUMN_NAME = "name";
 
     // query of creating photos table.
     public static final String CREATE_PHOTOS_TABLE =
@@ -34,9 +38,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     PHOTOS_COLUMN_CATEGORY + " TEXT, " +
                     PHOTOS_COLUMN_SRC + " TEXT" + ")";
 
+    // query of creating categories table.
+    public static final String CREATE_CATEGORIES_TABLE =
+            "CREATE TABLE " + TABLE_CATEGORIES + " (" +
+                    CATEGORIES_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    CATEGORIES_COLUMN_NAME + " TEXT" + ")";
+
     // query string of deleting users table.
     public static final String DELETE_TABLES =
-            "DROP TABLE IF EXISTS " + TABLE_PHOTOS + ";";
+            "DROP TABLE IF EXISTS " + TABLE_PHOTOS + ";" +
+            "DROP TABLE IF EXISTS " + TABLE_CATEGORIES + ";";
 
     public DatabaseHelper(Context context) {
 
@@ -50,9 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // this line executes the query we made earlier
         // to create the photos table.
         sqLiteDatabase.execSQL(CREATE_PHOTOS_TABLE);
-
-        // log the table creation for debugging.
-        Log.i(TAG, TABLE_PHOTOS + " has been created.");
+        sqLiteDatabase.execSQL(CREATE_CATEGORIES_TABLE);
     }
 
     @Override
