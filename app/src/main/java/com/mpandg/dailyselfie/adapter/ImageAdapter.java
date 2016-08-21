@@ -26,8 +26,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public static final int TYPE_LINEAR = 1;
     private Context context;
     private static List<Photo> photos;
+    private int listViewType;
 
-    public ImageAdapter(Context context, List<Photo> photos) {
+    public ImageAdapter(Context context, List<Photo> photos, int listViewType) {
 
         this.context = context;
         if (photos == null){
@@ -37,14 +38,21 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             //noinspection AccessStaticViaInstance
             this.photos = photos;
         }
+        this.listViewType = listViewType;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        View v;
         // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.listitem_photo, parent, false);
+        if (listViewType == TYPE_GRID){
+
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_photo_grid, parent, false);
+        } else {
+
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_photo, parent, false);
+        }
         // set the view's size, margins, paddings and layout parameters
 
         return new ViewHolder(v);

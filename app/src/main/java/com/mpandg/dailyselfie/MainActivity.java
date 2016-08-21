@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.mpandg.dailyselfie.adapter.ImageAdapter;
 import com.mpandg.dailyselfie.data.DataSource;
 import com.mpandg.dailyselfie.model.Photo;
+import com.mpandg.dailyselfie.util.ChangeStyleDialogFragment;
 import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 import com.mpandg.dailyselfie.util.NotificationReceiver;
 import com.mpandg.dailyselfie.util.PhotoDeleteListener;
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
         setContentView(R.layout.activity_main);
 
         // show the recyclerView.
-        initGallery(ImageAdapter.TYPE_LINEAR);
+        initGallery(ImageAdapter.TYPE_GRID);
 
         // Create a pending intent for the reminder notifications.
         Intent notificationIntent = new Intent(MainActivity.this, NotificationReceiver.class);
@@ -70,7 +72,15 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
 
         // init recyclerView.
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+        // decide what layoutManager to load.
+        RecyclerView.LayoutManager layoutManager;
+        if (type == ImageAdapter.TYPE_GRID) {
+            layoutManager = new GridLayoutManager(this, 3);
+        } else {
+            layoutManager = new LinearLayoutManager(this);
+        }
+
         recyclerView.setLayoutManager(layoutManager);
 
         //fetch the photos from dataBase.
@@ -79,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
         dataSource.close();
 
         // init the adapter.
-        adapter = new ImageAdapter(this, photos);
+        adapter = new ImageAdapter(this, photos, type);
 
         // set the adapter
         recyclerView.setAdapter(adapter);
@@ -154,6 +164,11 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
             case R.id.take_photo:
                 dispatchTakePictureIntent();
                 return true;
+
+            case R.id.change_style:
+                ChangeStyleDialogFragment fragment = ChangeStyleDialogFragment.newInstance();
+                fragment.show(getSupportFragmentManager(), ChangeStyleDialogFragment.TAG);
+
             default:
                 return super.onOptionsItemSelected(item);
         }

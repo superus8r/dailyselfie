@@ -13,4 +13,11 @@
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="photo_load_error">Photo load error</string>
+    <string name="change_style">Change Style</string>
+
+    <string-array name="list_view_types">
+        <item>List</item>
+        <item>Grid</item>
+    </string-array>
+
 </resources>
