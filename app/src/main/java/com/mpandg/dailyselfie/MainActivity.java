@@ -171,6 +171,10 @@ public class MainActivity extends AppCompatActivity implements PhotoDeleteListen
             case R.id.change_style:
                 ChangeStyleDialogFragment fragment = ChangeStyleDialogFragment.newInstance();
                 fragment.show(getSupportFragmentManager(), ChangeStyleDialogFragment.TAG);
+                return true;
+
+            case R.id.categories:
+                startActivity(new Intent(this, CategoryActivity.class));
 
             default:
                 return super.onOptionsItemSelected(item);
