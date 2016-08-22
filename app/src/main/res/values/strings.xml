@@ -5,7 +5,7 @@
     <string name="image">image thumbnail</string>
     <string name="time_for_selfie">Time for another selfie</string>
     <string name="notification_title">Daily Selfie Reminder</string>
-    <string name="delete_title">Delete Photo</string>
+    <string name="title_delete_photo">Delete Photo</string>
     <string name="alert_dialog_yes">Yes</string>
     <string name="alert_dialog_no">No</string>
     <string name="deleted">Deleted Successfuly</string>
@@ -21,6 +21,7 @@
     <string name="alert_dialog_ok">OK</string>
     <string name="category_hint">Category Name</string>
     <string name="category_added">Category added</string>
+    <string name="title_delete_category">Delete Category</string>
 
     <string-array name="list_view_types">
         <item>List</item>

@@ -25,7 +25,6 @@ import com.mpandg.dailyselfie.model.Photo;
 import com.mpandg.dailyselfie.util.ChangeStyleDialogFragment;
 import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 import com.mpandg.dailyselfie.util.NotificationReceiver;
-import com.mpandg.dailyselfie.util.PhotoDeleteListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PhotoDeleteListener, ImageAdapter.ClickListener, ChangeStyleDialogFragment.OnViewStyleChangeListener {
+public class MainActivity extends AppCompatActivity implements DeletePhotoDialogFragment.DeleteListener, ImageAdapter.ClickListener, ChangeStyleDialogFragment.OnViewStyleChangeListener {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final long TWO_MINUTES = 2 * 60 * 1000;

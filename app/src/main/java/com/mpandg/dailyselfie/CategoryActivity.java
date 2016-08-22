@@ -11,10 +11,12 @@ import com.mpandg.dailyselfie.adapter.CategoryAdapter;
 import com.mpandg.dailyselfie.data.DataSource;
 import com.mpandg.dailyselfie.model.Category;
 import com.mpandg.dailyselfie.util.AddCategoryDialogFragment;
+import com.mpandg.dailyselfie.util.DeleteCategoryDialogFragment;
+import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 
 import java.util.List;
 
-public class CategoryActivity extends AppCompatActivity implements CategoryAdapter.ClickListener {
+public class CategoryActivity extends AppCompatActivity implements CategoryAdapter.ClickListener, AddCategoryDialogFragment.OnCategoryAddListener, DeleteCategoryDialogFragment.DeleteListener {
 
     private List<Category> categories;
     private RecyclerView recyclerView;
@@ -70,5 +72,25 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
     @Override
     public void onLongClickListener(Category category, int position) {
 
+        DeleteCategoryDialogFragment fragment = DeleteCategoryDialogFragment.newInstance(category, position);
+        fragment.show(getSupportFragmentManager(), DeletePhotoDialogFragment.TAG);
+    }
+
+    @Override
+    public void onCategoryAdded(Category category) {
+
+        // add the newly added category to adapter.
+        adapter.addItem(category);
+    }
+
+    @Override
+    public void onDeleteCategory(Category category, int position) {
+
+        // delete the category from database.
+        category.delete(this);
+        // remove from category list
+        categories.remove(position);
+        // remove from adapter.
+        adapter.removeItem(position);
     }
 }
