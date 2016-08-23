@@ -77,8 +77,9 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         Intent receivedIntent = getIntent();
 
         Photo photo = receivedIntent.getParcelableExtra(Photo.KEY);
-        int adapterPosition = receivedIntent.getExtras().getInt(Photo.POSITION_KEY);
         if (photo != null) {
+            // if photo is not null, get the position of it.
+            int adapterPosition = receivedIntent.getExtras().getInt(Photo.POSITION_KEY);
             // parent expects a result, create an intent containing the photo and the clicked category.
             Intent result = new Intent();
             result.putExtra(Photo.KEY, photo);
@@ -88,12 +89,13 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
             setResult(RESULT_OK, result);
             // finish the current activity.
             finish();
-        }
+        } else {
 
-        // handle simple category click:
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Category.KEY, category);
-        startActivity(intent);
+            // handle simple category click:
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(Category.KEY, category);
+            startActivity(intent);
+        }
     }
 
     @Override
