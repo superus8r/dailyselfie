@@ -87,12 +87,28 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
         } else {
             layoutManager = new LinearLayoutManager(this);
         }
-
+        // set the layout manager for the adapter.
         recyclerView.setLayoutManager(layoutManager);
+
+        // check if a category filter is applied.
+        Category category = getIntent().getParcelableExtra(Category.KEY);
 
         //fetch the photos from dataBase.
         dataSource.open();
-        List<Photo> photos = dataSource.getPhotos();
+        List<Photo> photos;
+        if (category != null) {
+            // filter photos by category.
+            photos = dataSource.getPhotos(category);
+            // set the title corresponding to category.
+            setTitle(category.getName());
+            // show the back button.
+            //noinspection ConstantConditions
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        } else {
+            // show all photos.
+            photos = dataSource.getPhotos();
+        }
         dataSource.close();
 
         // init the adapter.
@@ -190,10 +206,12 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
                 ChangeStyleDialogFragment fragment = ChangeStyleDialogFragment.newInstance();
                 fragment.show(getSupportFragmentManager(), ChangeStyleDialogFragment.TAG);
                 return true;
-
             case R.id.categories:
                 startActivity(new Intent(this, CategoryActivity.class));
-
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -255,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
                 break;
             case PhotoOptionsDialogFragment.OPTION_SHARE:
                 // share the photo.
+                share(photo);
                 break;
             case PhotoOptionsDialogFragment.OPTION_DELETE:
                 // open the delete dialog.
@@ -262,5 +281,14 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
                 fragment.show(getSupportFragmentManager(), DeletePhotoDialogFragment.TAG);
                 break;
         }
+    }
+
+    private void share(Photo photo) {
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(photo.getSrc())));
+        shareIntent.setType("image/jpeg");
+        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
 }

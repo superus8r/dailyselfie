@@ -23,6 +23,7 @@
     <string name="category_added">Category added</string>
     <string name="title_delete_category">Delete Category</string>
     <string name="choose_option">Please choose an option</string>
+    <string name="send_to">Send via:</string>
 
     <string-array name="list_view_types">
         <item>List</item>

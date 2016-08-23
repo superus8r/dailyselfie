@@ -75,6 +75,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
 
         // check if the parent activity expects a result, respond to this event.
         Intent receivedIntent = getIntent();
+
         Photo photo = receivedIntent.getParcelableExtra(Photo.KEY);
         int adapterPosition = receivedIntent.getExtras().getInt(Photo.POSITION_KEY);
         if (photo != null) {
@@ -88,6 +89,11 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
             // finish the current activity.
             finish();
         }
+
+        // handle simple category click:
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(Category.KEY, category);
+        startActivity(intent);
     }
 
     @Override

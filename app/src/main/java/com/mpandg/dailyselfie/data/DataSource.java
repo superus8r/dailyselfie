@@ -143,6 +143,66 @@ public class DataSource {
         }
     }
 
+    /**
+     *
+     * @param category
+     * Filter photos by category.
+     * @return
+     * Return photos with the expected category.
+     */
+    public List<Photo> getPhotos (Category category){
+
+        List<Photo> photos;
+
+        // where statement.
+        String whereClause = DatabaseHelper.PHOTOS_COLUMN_CATEGORY + "=?";
+        String[] whereArgs = {category.getName()};
+
+        // creating the cursor to retrieve data.
+        // cursor will contain the data when the
+        // query is executed.
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PHOTOS, usersTableColumns,
+                whereClause, whereArgs, null, null, null);
+
+        // log the number of returned rows for debug.
+        Log.i(TAG, "returned: " + cursor.getCount() + " rows .");
+
+        // check if the cursor is not null.
+        if(cursor.getCount()>0){
+
+            // instantiate the list.
+            photos = new ArrayList<>();
+
+            // cursor starts from -1 index, so we should call
+            // moveToNext method to iterate over the data it contains.
+            while (cursor.moveToNext()) {
+
+                Photo photo = new Photo();
+
+                // read the data in the cursor row using the index which is the column name.
+                photo.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_NAME)));
+                photo.setCategory(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_CATEGORY)));
+                photo.setSrc(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_SRC)));
+
+                // log the retrieved photo.
+                Log.i(TAG, "photo retrieved:" + photo.getName());
+
+                // now add the retrieved photo into the list.
+                photos.add(photo);
+            }
+
+            // now we have the photos in our string list
+            return photos;
+
+        } else {
+
+            // if the cursor was empty, it means that
+            // there was no photos found in the table,
+            // so return null.
+            return null;
+        }
+    }
+
     public boolean deletePhotoByName(String name) {
 
         // where statement.
