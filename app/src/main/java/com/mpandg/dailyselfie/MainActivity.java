@@ -21,10 +21,12 @@ import android.widget.Toast;
 import com.mpandg.dailyselfie.adapter.ImageAdapter;
 import com.mpandg.dailyselfie.data.DataSource;
 import com.mpandg.dailyselfie.data.SharedPrefs;
+import com.mpandg.dailyselfie.model.Category;
 import com.mpandg.dailyselfie.model.Photo;
 import com.mpandg.dailyselfie.util.ChangeStyleDialogFragment;
 import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 import com.mpandg.dailyselfie.util.NotificationReceiver;
+import com.mpandg.dailyselfie.util.PhotoOptionsDialogFragment;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +34,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DeletePhotoDialogFragment.DeleteListener, ImageAdapter.ClickListener, ChangeStyleDialogFragment.OnViewStyleChangeListener {
+public class MainActivity extends AppCompatActivity implements DeletePhotoDialogFragment.DeleteListener,
+        ImageAdapter.ClickListener,
+        ChangeStyleDialogFragment.OnViewStyleChangeListener,
+        PhotoOptionsDialogFragment.OnPhotoOptionsItemClickListener {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final long TWO_MINUTES = 2 * 60 * 1000;
@@ -149,6 +154,16 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
             // update the adapter.
             adapter.addItem(photo);
             //adapter.notifyDataSetChanged();
+        } else if (requestCode == CategoryActivity.REQUEST_GET_CATEGORY && resultCode == RESULT_OK) {
+
+            // get data which exists in the intent object.
+            Photo photo = data.getParcelableExtra(Photo.KEY);
+            Category category = data.getParcelableExtra(Category.KEY);
+            Log.i(TAG, "category:" + category.getName() + " is going to be set for photo:" + photo.getName());
+
+            // set the received category for the photo.
+            photo.setCategory(category.getName());
+            photo.save(this);
         }
     }
 
@@ -205,9 +220,9 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
     @Override
     public void onLongClickListener(Photo photo, int position) {
 
-        // open the delete dialog.
-        DeletePhotoDialogFragment fragment = DeletePhotoDialogFragment.newInstance(photo, position);
-        fragment.show(getSupportFragmentManager(), DeletePhotoDialogFragment.TAG);
+        // open the options dialog.
+        PhotoOptionsDialogFragment fragment = PhotoOptionsDialogFragment.newInstance(photo, position);
+        fragment.show(getSupportFragmentManager(), PhotoOptionsDialogFragment.TAG);
     }
 
     @Override
@@ -219,5 +234,28 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
 
         // update the recyclerView.
         initGallery(viewStyle);
+    }
+
+    @Override
+    public void onPhotoOptionsItemClick(Photo photo, int position, int itemIndex) {
+
+        switch (itemIndex) {
+
+            case PhotoOptionsDialogFragment.OPTION_SET_CATEGORY:
+                // set the category.
+                Intent photoOptionsIntent = new Intent(this, CategoryActivity.class);
+                // put the photo in the intent object.
+                photoOptionsIntent.putExtra(Photo.KEY, photo);
+                startActivityForResult(photoOptionsIntent, CategoryActivity.REQUEST_GET_CATEGORY);
+                break;
+            case PhotoOptionsDialogFragment.OPTION_SHARE:
+                // share the photo.
+                break;
+            case PhotoOptionsDialogFragment.OPTION_DELETE:
+                // open the delete dialog.
+                DeletePhotoDialogFragment fragment = DeletePhotoDialogFragment.newInstance(photo, position);
+                fragment.show(getSupportFragmentManager(), DeletePhotoDialogFragment.TAG);
+                break;
+        }
     }
 }

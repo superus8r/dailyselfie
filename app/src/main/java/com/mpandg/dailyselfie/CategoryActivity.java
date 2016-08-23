@@ -1,15 +1,18 @@
 package com.mpandg.dailyselfie;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.mpandg.dailyselfie.adapter.CategoryAdapter;
 import com.mpandg.dailyselfie.data.DataSource;
 import com.mpandg.dailyselfie.model.Category;
+import com.mpandg.dailyselfie.model.Photo;
 import com.mpandg.dailyselfie.util.AddCategoryDialogFragment;
 import com.mpandg.dailyselfie.util.DeleteCategoryDialogFragment;
 import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
@@ -17,6 +20,8 @@ import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 import java.util.List;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryAdapter.ClickListener, AddCategoryDialogFragment.OnCategoryAddListener, DeleteCategoryDialogFragment.DeleteListener {
+
+    public static final int REQUEST_GET_CATEGORY = 10;
 
     private List<Category> categories;
     private RecyclerView recyclerView;
@@ -55,6 +60,11 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
                 fragment.show(getSupportFragmentManager(), AddCategoryDialogFragment.TAG);
             }
         });
+
+        //noinspection ConstantConditions
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(R.string.categories);
     }
 
     private void initList() {
@@ -67,6 +77,18 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
     @Override
     public void onClickListener(Category category) {
 
+        // check if the parent activity expects a result, respond to this event.
+        Intent receivedIntent = getIntent();
+        Photo photo = receivedIntent.getParcelableExtra(Photo.KEY);
+        if (photo != null) {
+            // parent expects a result, create an intent containing the photo and the clicked category.
+            Intent result = new Intent();
+            result.putExtra(Photo.KEY, photo);
+            result.putExtra(Category.KEY, category);
+            // set the activity result.
+            setResult(RESULT_OK, result);
+            // finish the current activity.
+        }
     }
 
     @Override
@@ -88,9 +110,22 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
 
         // delete the category from database.
         category.delete(this);
-        // remove from category list
-        categories.remove(position);
         // remove from adapter.
         adapter.removeItem(position);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            // handle up button click.
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

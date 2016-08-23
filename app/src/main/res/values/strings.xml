@@ -22,10 +22,17 @@
     <string name="category_hint">Category Name</string>
     <string name="category_added">Category added</string>
     <string name="title_delete_category">Delete Category</string>
+    <string name="choose_option">Please choose an option</string>
 
     <string-array name="list_view_types">
         <item>List</item>
         <item>Grid</item>
+    </string-array>
+
+    <string-array name="photo_option_items">
+        <item>Set Category</item>
+        <item>Share</item>
+        <item>Delete</item>
     </string-array>
 
 </resources>
