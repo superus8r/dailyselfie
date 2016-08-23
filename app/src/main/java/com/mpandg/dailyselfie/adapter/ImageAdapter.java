@@ -76,12 +76,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         public View root;
         public ImageView image;
         public TextView name;
+        public TextView category;
 
         public ViewHolder(View itemView) {
             super(itemView);
             root = itemView;
             image = (ImageView) itemView.findViewById(R.id.image);
             name = (TextView) itemView.findViewById(R.id.name);
+            category = (TextView) itemView.findViewById(R.id.category);
         }
 
         public void bind(Context context) {
@@ -95,6 +97,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                     .load(new File(photo.getSrc()))
                     .into(image);
             name.setText(photo.getName());
+            category.setText(photo.getCategory());
 
             // register the listeners.
             root.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +122,17 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         photos.add(photo);
         // refresh the adapter.
         notifyDataSetChanged();
+    }
+
+    public void updateItem (Photo photo, int position) {
+
+        Photo adapterPhoto = photos.get(position);
+        // update the photo.
+        adapterPhoto.setName(photo.getName());
+        adapterPhoto.setCategory(photo.getCategory());
+        adapterPhoto.setSrc(photo.getSrc());
+        // refresh the adapter item.
+        notifyItemChanged(position);
     }
 
     public void removeItem(int position) {

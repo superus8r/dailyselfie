@@ -17,13 +17,14 @@ import com.mpandg.dailyselfie.util.AddCategoryDialogFragment;
 import com.mpandg.dailyselfie.util.DeleteCategoryDialogFragment;
 import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryAdapter.ClickListener, AddCategoryDialogFragment.OnCategoryAddListener, DeleteCategoryDialogFragment.DeleteListener {
 
     public static final int REQUEST_GET_CATEGORY = 10;
 
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
 
@@ -40,13 +41,8 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
 
         recyclerView = (RecyclerView) findViewById(R.id.list);
 
-        if (categories != null) {
-            adapter = new CategoryAdapter(this, categories);
-            initList();
-        } else {
-
-            // show no category place holder.
-        }
+        adapter = new CategoryAdapter(this, categories);
+        initList();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         //noinspection deprecation
@@ -80,14 +76,17 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         // check if the parent activity expects a result, respond to this event.
         Intent receivedIntent = getIntent();
         Photo photo = receivedIntent.getParcelableExtra(Photo.KEY);
+        int adapterPosition = receivedIntent.getExtras().getInt(Photo.POSITION_KEY);
         if (photo != null) {
             // parent expects a result, create an intent containing the photo and the clicked category.
             Intent result = new Intent();
             result.putExtra(Photo.KEY, photo);
             result.putExtra(Category.KEY, category);
+            result.putExtra(Photo.POSITION_KEY, adapterPosition);
             // set the activity result.
             setResult(RESULT_OK, result);
             // finish the current activity.
+            finish();
         }
     }
 

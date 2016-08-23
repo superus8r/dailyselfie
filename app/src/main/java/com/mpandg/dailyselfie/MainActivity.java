@@ -159,11 +159,15 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
             // get data which exists in the intent object.
             Photo photo = data.getParcelableExtra(Photo.KEY);
             Category category = data.getParcelableExtra(Category.KEY);
+            int adapterPosition = data.getExtras().getInt(Photo.POSITION_KEY);
             Log.i(TAG, "category:" + category.getName() + " is going to be set for photo:" + photo.getName());
 
             // set the received category for the photo.
             photo.setCategory(category.getName());
             photo.save(this);
+
+            // update the adapter.
+            adapter.updateItem(photo, adapterPosition);
         }
     }
 
@@ -246,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
                 Intent photoOptionsIntent = new Intent(this, CategoryActivity.class);
                 // put the photo in the intent object.
                 photoOptionsIntent.putExtra(Photo.KEY, photo);
+                photoOptionsIntent.putExtra(Photo.POSITION_KEY, position);
                 startActivityForResult(photoOptionsIntent, CategoryActivity.REQUEST_GET_CATEGORY);
                 break;
             case PhotoOptionsDialogFragment.OPTION_SHARE:
