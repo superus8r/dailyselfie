@@ -124,7 +124,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             // handle up button click.
             case android.R.id.home:

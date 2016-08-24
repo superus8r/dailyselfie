@@ -95,6 +95,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             final Photo photo = photos.get(getAdapterPosition());
             Picasso.with(context)
                     .load(new File(photo.getSrc()))
+                    .resize(128, 128)
+                    .onlyScaleDown()
+                    .centerCrop()
                     .into(image);
             name.setText(photo.getName());
             category.setText(photo.getCategory());
