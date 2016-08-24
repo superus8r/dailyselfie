@@ -1,7 +1,10 @@
 package com.mpandg.dailyselfie.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +66,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ImageAdapter.ViewHolder holder, int position) {
 
-        holder.bind(context);
+        holder.bind(context, listViewType);
     }
 
     @Override
@@ -86,19 +89,35 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             category = (TextView) itemView.findViewById(R.id.category);
         }
 
-        public void bind(Context context) {
+        public void bind(Context context, int listViewType) {
 
             // prepare the listener.
             final ClickListener listener = (ClickListener) context;
 
             // bind views to data.
             final Photo photo = photos.get(getAdapterPosition());
+
+            int imageWidth = 128;
+            if (listViewType == STYLE_GRID) {
+                // evaluate the dimentions of screen.
+                Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display.getSize(size);
+
+                // replace image width with 1/3 of screen width.
+                imageWidth = size.x / 3;
+
+                // add one dp of margin to itemView.
+                itemView.setPadding(1, 1, 1, 1);
+            }
+
             Picasso.with(context)
                     .load(new File(photo.getSrc()))
-                    .resize(128, 128)
+                    .resize(imageWidth, imageWidth)
                     .onlyScaleDown()
                     .centerCrop()
                     .into(image);
+
             name.setText(photo.getName());
             category.setText(photo.getCategory());
 
