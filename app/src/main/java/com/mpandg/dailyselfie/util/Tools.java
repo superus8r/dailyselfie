@@ -36,22 +36,6 @@ public class Tools {
     private Tools() {
     }
 
-    public void importPhotos() {
-
-        File dcimDir = new File(DCIM_PATH);
-        File[] listOfFiles = dcimDir.listFiles();
-
-        if (listOfFiles != null) {
-            for (int i = 0; i < listOfFiles.length; i++) {
-                if (listOfFiles[i].isFile()) {
-                    Log.d("File ", listOfFiles[i].getName());
-                } else if (listOfFiles[i].isDirectory()) {
-                    Log.d("Directory ", listOfFiles[i].getName());
-                }
-            }
-        }
-    }
-
     public ArrayList<String> getExternalImagesPath(Context context) {
         Uri uri;
         Cursor cursor;
