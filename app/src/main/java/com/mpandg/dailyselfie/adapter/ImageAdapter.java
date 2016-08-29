@@ -99,7 +99,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
             int imageWidth = 128;
             if (listViewType == STYLE_GRID) {
-                // evaluate the dimentions of screen.
+                // evaluate the dimensions of screen.
                 Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
                 Point size = new Point();
                 display.getSize(size);

@@ -11,7 +11,6 @@ import com.mpandg.dailyselfie.model.Category;
 import com.mpandg.dailyselfie.model.Photo;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,7 +44,7 @@ public class DataSource {
         dbHelper = new DatabaseHelper(context);
     }
 
-    public void open(){
+    public void open() {
 
         // opening the database or
         // creating the table structures for the first time.
@@ -56,13 +55,13 @@ public class DataSource {
         Log.i(TAG, "database opened");
     }
 
-    public boolean isOpen () {
+    public boolean isOpen() {
 
         // check if the database is already open.
         return database.isOpen();
     }
 
-    public void close(){
+    public void close() {
 
         // close the database.
         database.close();
@@ -72,29 +71,56 @@ public class DataSource {
     }
 
     // insert a photo record into database .
-    public void insertPhoto (Photo photo) {
+    public void insertPhoto(Photo photo) {
 
-        // ContentValues implements a map interface.
-        ContentValues values = new ContentValues();
+        if (getPhotoByName(photo.getName()) == null) {
+            // ContentValues implements a map interface.
+            ContentValues values = new ContentValues();
 
-        // put the data you want to insert into database.
-        values.put(DatabaseHelper.PHOTOS_COLUMN_NAME, photo.getName());
-        values.put(DatabaseHelper.PHOTOS_COLUMN_CATEGORY, photo.getCategory());
-        values.put(DatabaseHelper.PHOTOS_COLUMN_SRC, photo.getSrc());
+            // put the data you want to insert into database.
+            values.put(DatabaseHelper.PHOTOS_COLUMN_NAME, photo.getName());
+            values.put(DatabaseHelper.PHOTOS_COLUMN_CATEGORY, photo.getCategory());
+            values.put(DatabaseHelper.PHOTOS_COLUMN_SRC, photo.getSrc());
 
-        // passing the string array which we created earlier
-        // and the contentValues which includes the values
-        // into the insert method, inserts the values corresponding
-        // to column names and returns the id of the inserted row.
-        long insertId = database.insert(DatabaseHelper.TABLE_PHOTOS , null, values);
+            // passing the string array which we created earlier
+            // and the contentValues which includes the values
+            // into the insert method, inserts the values corresponding
+            // to column names and returns the id of the inserted row.
+            long insertId = database.insert(DatabaseHelper.TABLE_PHOTOS, null, values);
 
-        // log the insert id for debugging purposes.
-        Log.i(TAG, "added name id:" + insertId);
+            // log the insert id for debugging purposes.
+            Log.i(TAG, "added name id:" + insertId);
+        } else {
+
+            Log.i(TAG, "photo with name " + photo.getName() + " already exists.");
+
+            // where statement.
+            String whereClause = DatabaseHelper.PHOTOS_COLUMN_NAME + "=?";
+            String[] whereArgs = {photo.getName()};
+
+            // update the photo if it already exists.
+            // ContentValues implements a map interface.
+            ContentValues values = new ContentValues();
+
+            // put the data you want to insert into database.
+            values.put(DatabaseHelper.PHOTOS_COLUMN_NAME, photo.getName());
+            values.put(DatabaseHelper.PHOTOS_COLUMN_CATEGORY, photo.getCategory());
+            values.put(DatabaseHelper.PHOTOS_COLUMN_SRC, photo.getSrc());
+
+            // passing the string array which we created earlier
+            // and the contentValues which includes the values
+            // into the insert method, inserts the values corresponding
+            // to column names and returns the id of the inserted row.
+            long insertId = database.update(DatabaseHelper.TABLE_PHOTOS, values, whereClause, whereArgs);
+
+            // log the insert id for debugging purposes.
+            Log.i(TAG, "added name id:" + insertId);
+        }
     }
 
     // returns a list of string
     // containing the photos saved in the database.
-    public List<Photo> getPhotos (){
+    public List<Photo> getPhotos() {
 
         List<Photo> photos;
 
@@ -108,7 +134,7 @@ public class DataSource {
         Log.i(TAG, "returned: " + cursor.getCount() + " rows .");
 
         // check if the cursor is not null.
-        if(cursor.getCount()>0){
+        if (cursor.getCount() > 0) {
 
             // instantiate the list.
             photos = new ArrayList<>();
@@ -143,14 +169,60 @@ public class DataSource {
         }
     }
 
+    // returns a list of string
+    // containing the photos saved in the database.
+    public Photo getPhotoByName(String name) {
+
+        // where statement.
+        String whereClause = DatabaseHelper.PHOTOS_COLUMN_NAME + "=?";
+        String[] whereArgs = {name};
+
+        // creating the cursor to retrieve data.
+        // cursor will contain the data when the
+        // query is executed.
+        Cursor cursor = database.query(DatabaseHelper.TABLE_PHOTOS, usersTableColumns,
+                whereClause, whereArgs, null, null, null);
+
+        // log the number of returned rows for debug.
+        Log.i(TAG, "returned: " + cursor.getCount() + " rows .");
+
+        // check if the cursor is not null.
+        if (cursor.getCount() > 0) {
+
+            // cursor starts from -1 index, so we should call
+            // moveToNext method to iterate over the data it contains.
+            cursor.moveToNext();
+
+            Photo photo = new Photo();
+
+            // read the data in the cursor row using the index which is the column name.
+            photo.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_NAME)));
+            photo.setCategory(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_CATEGORY)));
+            photo.setSrc(cursor.getString(cursor.getColumnIndex(DatabaseHelper.PHOTOS_COLUMN_SRC)));
+
+            // log the retrieved photo.
+            Log.i(TAG, "photo retrieved:" + photo.getName());
+
+            // now add the retrieved photo into the list.
+
+
+            // now we have the photos in our string list
+            return photo;
+
+        } else {
+
+            // if the cursor was empty, it means that
+            // there was no photos found in the table,
+            // so return null.
+            return null;
+        }
+    }
+
     /**
-     *
-     * @param category
-     * Filter photos by category.
-     * @return
-     * Return photos with the expected category.
+     * @param category Filter photos by category.
+     * @return Return photos with the expected category.
      */
-    public List<Photo> getPhotos (Category category){
+    public List<Photo> getPhotos(Category category) {
 
         List<Photo> photos;
 
@@ -168,7 +240,7 @@ public class DataSource {
         Log.i(TAG, "returned: " + cursor.getCount() + " rows .");
 
         // check if the cursor is not null.
-        if(cursor.getCount()>0){
+        if (cursor.getCount() > 0) {
 
             // instantiate the list.
             photos = new ArrayList<>();
@@ -219,7 +291,7 @@ public class DataSource {
     }
 
     // insert a category record into database .
-    public void insertCategory (Category category) {
+    public void insertCategory(Category category) {
 
         // ContentValues implements a map interface.
         ContentValues values = new ContentValues();
@@ -231,7 +303,7 @@ public class DataSource {
         // and the contentValues which includes the values
         // into the insert method, inserts the values corresponding
         // to column names and returns the id of the inserted row.
-        long insertId = database.insert(DatabaseHelper.TABLE_CATEGORIES , null, values);
+        long insertId = database.insert(DatabaseHelper.TABLE_CATEGORIES, null, values);
 
         // log the insert id for debugging purposes.
         Log.i(TAG, "added item id:" + insertId);
@@ -239,7 +311,7 @@ public class DataSource {
 
     // returns a list of string
     // containing the photos saved in the database.
-    public List<Category> getCategories (){
+    public List<Category> getCategories() {
 
         List<Category> categories;
 
@@ -253,7 +325,7 @@ public class DataSource {
         Log.i(TAG, "returned: " + cursor.getCount() + " rows .");
 
         // check if the cursor is not null.
-        if(cursor.getCount()>0){
+        if (cursor.getCount() > 0) {
 
             // instantiate the list.
             categories = new ArrayList<>();

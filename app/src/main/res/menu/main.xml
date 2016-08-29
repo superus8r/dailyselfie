@@ -17,4 +17,5 @@
         android:id="@+id/categories"
         android:title="@string/categories"
         app:showAsAction="never"/>
+
 </menu>

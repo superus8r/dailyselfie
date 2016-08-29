@@ -16,6 +16,7 @@ import com.mpandg.dailyselfie.model.Photo;
 import com.mpandg.dailyselfie.util.AddCategoryDialogFragment;
 import com.mpandg.dailyselfie.util.DeleteCategoryDialogFragment;
 import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
+import com.mpandg.dailyselfie.util.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,10 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(R.string.categories);
+
+        // get photos from dcim dir.
+        Tools tools = Tools.getInstance();
+        tools.importPhotos();
     }
 
     private void initList() {
