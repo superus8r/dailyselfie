@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
         setContentView(R.layout.activity_main);
 
         // show the recyclerView.
-        initGallery(ImageAdapter.STYLE_DEFAULT);
+        SharedPrefs prefs = SharedPrefs.getInstance(this);  // read the defined style from shared prefs.
+        initGallery(prefs.getViewStyle());
 
         // Create a pending intent for the reminder notifications.
         Intent notificationIntent = new Intent(MainActivity.this, NotificationReceiver.class);
@@ -70,6 +71,15 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
                 SystemClock.elapsedRealtime() + TWO_MINUTES,
                 TWO_MINUTES,
                 notificationPendingIntent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // update the style whenever user comes back to this activity.
+        SharedPrefs prefs = SharedPrefs.getInstance(this);
+        initGallery(prefs.getViewStyle());
     }
 
     private void initGallery(int type) {
