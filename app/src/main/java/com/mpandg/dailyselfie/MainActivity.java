@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -221,8 +222,9 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
                 startActivity(new Intent(this, CategoryActivity.class));
                 return true;
             case R.id.action_import:
-                Tools tools = Tools.getInstance();
-                tools.getExternalImagesPath(this);
+                ImportPhotosTask task = new ImportPhotosTask();
+                task.execute();
+                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -305,4 +307,30 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
         shareIntent.setType("image/jpeg");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
+
+    private class ImportPhotosTask extends AsyncTask<Void, Integer, Void> {
+        protected Void doInBackground(Void... nothing) {
+
+            Tools tools = Tools.getInstance();
+            List<Photo> photos = tools.getExternalImagesPath(MainActivity.this);
+            int count = photos.size();
+            for (int i=0; i<count; i++) {
+                // publish the progress.
+                publishProgress((int) ((i / (float) count) * 100));
+
+                // save the photo.
+                Photo photo = photos.get(i);
+                photo.save(MainActivity.this);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+
+            Log.d(TAG, "progress:" + values[0]);
+        }
+    }
+
 }

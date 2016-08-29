@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.mpandg.dailyselfie.model.Photo;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -32,13 +35,14 @@ public class Tools {
     private Tools() {
     }
 
-    public ArrayList<String> getExternalImagesPath(Context context) {
+    public ArrayList<Photo> getExternalImagesPath(Context context) {
         Uri uri;
         Cursor cursor;
-        int column_index;
+        int column_index_data;
         StringTokenizer st1;
-        ArrayList<String> listOfAllImages = new ArrayList<>();
+        ArrayList<Photo> listOfAllImages = new ArrayList<>();
         String absolutePathOfImage = null;
+        String imageName = null;
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = {MediaStore.MediaColumns.DATA};
@@ -47,13 +51,14 @@ public class Tools {
                 null, null);
 
         // column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
-        column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         while (cursor.moveToNext()) {
-            absolutePathOfImage = cursor.getString(column_index);
-            listOfAllImages.add(absolutePathOfImage);
+            absolutePathOfImage = cursor.getString(column_index_data);
+            imageName = new File(absolutePathOfImage).getName();
+            listOfAllImages.add(new Photo(imageName, absolutePathOfImage));
 
             // log the photo name for debugging purposes.
-            Log.d(TAG, "photo address to import:" + absolutePathOfImage);
+            //Log.d(TAG, "photo to import:" + imageName);
         }
 
         cursor.close();

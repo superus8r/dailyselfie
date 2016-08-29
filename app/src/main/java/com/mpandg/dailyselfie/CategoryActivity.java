@@ -62,10 +62,6 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(R.string.action_categories);
-
-        // get photos from dcim dir.
-        Tools tools = Tools.getInstance();
-        tools.importPhotos();
     }
 
     private void initList() {
