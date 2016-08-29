@@ -3,19 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/take_photo"
+        android:id="@+id/action_take_photo"
         android:icon="@drawable/ic_photo_camera_white_24dp"
-        android:title="@string/take_photo"
+        android:title="@string/action_take_photo"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/change_style"
-        android:title="@string/change_style"
+        android:id="@+id/action_change_style"
+        android:title="@string/action_change_style"
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/categories"
-        android:title="@string/categories"
+        android:id="@+id/action_categories"
+        android:title="@string/action_categories"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_import"
+        android:title="@string/action_import"
+        app:showAsAction="never" />
 </menu>

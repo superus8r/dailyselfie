@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Daily Selfie</string>
-    <string name="take_photo">Take Photo</string>
+    <string name="action_take_photo">Take Photo</string>
     <string name="dummy">dummy</string>
     <string name="image">image thumbnail</string>
     <string name="time_for_selfie">Time for another selfie</string>
@@ -13,9 +13,9 @@
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="photo_load_error">Photo load error</string>
-    <string name="change_style">Change Style</string>
+    <string name="action_change_style">Change Style</string>
     <string name="choose_style">Please choose list style.</string>
-    <string name="categories">Categories</string>
+    <string name="action_categories">Categories</string>
     <string name="add_category">Add new category</string>
     <string name="alert_dialog_cancell">Cancel</string>
     <string name="alert_dialog_ok">OK</string>
@@ -24,6 +24,7 @@
     <string name="title_delete_category">Delete Category</string>
     <string name="choose_option">Please choose an option</string>
     <string name="send_to">Send via:</string>
+    <string name="action_import">Import</string>
 
     <string-array name="list_view_types">
         <item>List</item>

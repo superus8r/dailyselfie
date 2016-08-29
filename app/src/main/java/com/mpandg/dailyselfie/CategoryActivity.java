@@ -61,7 +61,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
         //noinspection ConstantConditions
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(R.string.categories);
+        setTitle(R.string.action_categories);
 
         // get photos from dcim dir.
         Tools tools = Tools.getInstance();

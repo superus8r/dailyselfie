@@ -27,6 +27,7 @@ import com.mpandg.dailyselfie.util.ChangeStyleDialogFragment;
 import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 import com.mpandg.dailyselfie.util.NotificationReceiver;
 import com.mpandg.dailyselfie.util.PhotoOptionsDialogFragment;
+import com.mpandg.dailyselfie.util.Tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -208,17 +209,20 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.take_photo:
+            case R.id.action_take_photo:
                 dispatchTakePictureIntent();
                 return true;
 
-            case R.id.change_style:
+            case R.id.action_change_style:
                 ChangeStyleDialogFragment fragment = ChangeStyleDialogFragment.newInstance();
                 fragment.show(getSupportFragmentManager(), ChangeStyleDialogFragment.TAG);
                 return true;
-            case R.id.categories:
+            case R.id.action_categories:
                 startActivity(new Intent(this, CategoryActivity.class));
                 return true;
+            case R.id.action_import:
+                Tools tools = Tools.getInstance();
+                tools.getExternalImagesPath(this);
             case android.R.id.home:
                 onBackPressed();
                 return true;
