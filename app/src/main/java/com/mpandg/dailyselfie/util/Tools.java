@@ -1,17 +1,13 @@
 package com.mpandg.dailyselfie.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.SortedSet;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 /**
  * Created by Ali Kabiri on 8/21/2016.
@@ -41,11 +37,11 @@ public class Tools {
         Cursor cursor;
         int column_index;
         StringTokenizer st1;
-        ArrayList<String> listOfAllImages = new ArrayList<String>();
+        ArrayList<String> listOfAllImages = new ArrayList<>();
         String absolutePathOfImage = null;
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-        String[] projection = { MediaStore.MediaColumns.DATA };
+        String[] projection = {MediaStore.MediaColumns.DATA};
 
         cursor = context.getContentResolver().query(uri, projection, null,
                 null, null);
