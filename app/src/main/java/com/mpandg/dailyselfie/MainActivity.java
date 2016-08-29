@@ -28,6 +28,7 @@ import com.mpandg.dailyselfie.util.ChangeStyleDialogFragment;
 import com.mpandg.dailyselfie.util.DeletePhotoDialogFragment;
 import com.mpandg.dailyselfie.util.NotificationReceiver;
 import com.mpandg.dailyselfie.util.PhotoOptionsDialogFragment;
+import com.mpandg.dailyselfie.util.ProgressDialogFragment;
 import com.mpandg.dailyselfie.util.Tools;
 
 import java.io.File;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
     private ImageAdapter adapter;
     private DataSource dataSource;
     private RecyclerView recyclerView;
+    private ProgressDialogFragment progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,6 +224,10 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
                 startActivity(new Intent(this, CategoryActivity.class));
                 return true;
             case R.id.action_import:
+                // show the progress dialog.
+                progressDialog = ProgressDialogFragment.newInstance(R.string.import_msg);
+                progressDialog.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
+                // start the task.
                 ImportPhotosTask task = new ImportPhotosTask();
                 task.execute();
                 return true;
@@ -314,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
             Tools tools = Tools.getInstance();
             List<Photo> photos = tools.getExternalImagesPath(MainActivity.this);
             int count = photos.size();
-            for (int i=0; i<count; i++) {
+            for (int i = 0; i < count; i++) {
                 // publish the progress.
                 publishProgress((int) ((i / (float) count) * 100));
 
@@ -329,8 +335,14 @@ public class MainActivity extends AppCompatActivity implements DeletePhotoDialog
         @Override
         protected void onProgressUpdate(Integer... values) {
 
-            Log.d(TAG, "progress:" + values[0]);
+            // update the value on the dialog.
+            progressDialog.onProgressUpdate(values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
         }
     }
-
 }

@@ -25,6 +25,7 @@
     <string name="choose_option">Please choose an option</string>
     <string name="send_to">Send via:</string>
     <string name="action_import">Import</string>
+    <string name="import_msg">Importing</string>
 
     <string-array name="list_view_types">
         <item>List</item>
